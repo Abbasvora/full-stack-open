@@ -5,11 +5,13 @@ const Part = (props) => {
 }
 
 const Content = (props) => {
+  // console.log(props.content.part1)
+  const parts = props.parts
   return (
     <div>
-      <Part part={props.content.part1} exercise={props.content.exercises1} />
-      <Part part={props.content.part2} exercise={props.content.exercises2} />
-      <Part part={props.content.part3} exercise={props.content.exercises3} />
+      <Part part={parts[0].name} exercise={parts[0].exercises} />
+      <Part part={parts[1].name} exercise={parts[1].exercises} />
+      <Part part={parts[2].name} exercise={parts[2].exercises} />
 
     </div>
   )
