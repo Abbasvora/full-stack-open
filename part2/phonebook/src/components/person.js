@@ -1,4 +1,4 @@
-const Person = ({ persons, filterPersons }) => {
+const Person = ({ persons, filterPersons, deletePerson }) => {
 
   if (filterPersons.length !== 0) {
     persons = filterPersons
@@ -14,6 +14,7 @@ const Person = ({ persons, filterPersons }) => {
                 <tr key={person.id}>
                   <td>{person.name}</td>
                   <td>{person.number}</td>
+                  <td><button onClick={() => deletePerson(person.id)}>Delete</button></td>
                 </tr>
               )
             })
