@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
+import './main.css'
 import Filter from './components/filter'
 import Person from './components/person'
 import PersonForm from './components/person-form'
+import Notification from './components/notification'
 import phoneBookServices from './services/phonebook'
 
 const App = () => {
@@ -10,6 +12,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [filterName, setFilterName] = useState('')
   const [filterPersons, setFilterPersons] = useState([])
+  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     phoneBookServices.getAll().then(data => setPersons(data))
@@ -31,6 +34,10 @@ const App = () => {
         number: newNumber
       }
       phoneBookServices.create(personObj).then(data => setPersons(persons.concat(data)))
+      setMessage({ class: 'success', message: `${newName} added successfully` })
+      setTimeout(() => {
+        setMessage(null)
+      }, 3000)
 
     } else {
       if (window.confirm(`${newName} is already added to phonebook, replace old number with new one?`))
@@ -60,6 +67,12 @@ const App = () => {
       .then(data => {
         setPersons(persons.map(person => id !== person.id ? person : data))
       })
+      .catch((e) => {
+        setMessage({ class: 'error', message: `Information of ${person.name} has been removed from server` })
+        setTimeout(() => {
+          setMessage(null)
+        }, 3000)
+      })
   }
 
   const handleNameChange = (event) => {
@@ -86,6 +99,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} />
       <Filter filterValue={filterName} filterChange={handleFilterChange} />
       <h3>add new number</h3>
       <PersonForm onSubmit={addPerson} nameValue={newName} nameChnage={handleNameChange} numberValue={newNumber} numberChnage={handleNumberChange} />
